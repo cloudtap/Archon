@@ -1,13 +1,12 @@
 from mcp.server.fastmcp import FastMCP
-from datetime import datetime
 from dotenv import load_dotenv
 from typing import Dict, List
-import threading
 import requests
 import asyncio
 import uuid
-import sys
 import os
+
+from utils.utils import write_to_log
 
 # Load environment variables from .env file
 load_dotenv()
@@ -20,25 +19,6 @@ active_threads: Dict[str, List[str]] = {}
 
 # FastAPI service URL
 GRAPH_SERVICE_URL = os.getenv("GRAPH_SERVICE_URL", "http://localhost:8100")
-
-def write_to_log(message: str):
-    """Write a message to the logs.txt file in the workbench directory.
-    
-    Args:
-        message: The message to log
-    """
-    # Get the directory one level up from the current file
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.dirname(current_dir)
-    workbench_dir = os.path.join(parent_dir, "workbench")
-    log_path = os.path.join(workbench_dir, "logs.txt")
-    os.makedirs(workbench_dir, exist_ok=True)
-
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = f"[{timestamp}] {message}\n"
-
-    with open(log_path, "a", encoding="utf-8") as f:
-        f.write(log_entry)
 
 @mcp.tool()
 async def create_thread() -> str:

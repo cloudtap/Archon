@@ -79,6 +79,14 @@ class AgentState(TypedDict):
     refined_tools: str
     refined_agent: str
 
+
+def _parse_message_history(messages: List[bytes]) -> List[ModelMessage]:
+    """Convert serialized message history into Pydantic AI message objects."""
+    history: list[ModelMessage] = []
+    for row in messages:
+        history.extend(ModelMessagesTypeAdapter.validate_json(row))
+    return history
+
 # Scope Definition Node with Reasoner LLM
 async def define_scope_with_reasoner(state: AgentState):
     # First, get the documentation pages so the reasoner can decide which ones are necessary
@@ -153,9 +161,7 @@ async def coder_agent(state: AgentState, writer):
     )
 
     # Get the message history into the format for Pydantic AI
-    message_history: list[ModelMessage] = []
-    for message_row in state['messages']:
-        message_history.extend(ModelMessagesTypeAdapter.validate_json(message_row))
+    message_history = _parse_message_history(state['messages'])
 
     # The prompt either needs to be the user message (initial agent request or feedback)
     # or the refined prompt/tools/agent if we are in that stage of the agent creation process
@@ -233,9 +239,7 @@ async def route_user_message(state: AgentState):
 # Refines the prompt for the AI agent
 async def refine_prompt(state: AgentState):
     # Get the message history into the format for Pydantic AI
-    message_history: list[ModelMessage] = []
-    for message_row in state['messages']:
-        message_history.extend(ModelMessagesTypeAdapter.validate_json(message_row))
+    message_history = _parse_message_history(state['messages'])
 
     prompt = "Based on the current conversation, refine the prompt for the agent."
 
@@ -254,9 +258,7 @@ async def refine_tools(state: AgentState):
     )
 
     # Get the message history into the format for Pydantic AI
-    message_history: list[ModelMessage] = []
-    for message_row in state['messages']:
-        message_history.extend(ModelMessagesTypeAdapter.validate_json(message_row))
+    message_history = _parse_message_history(state['messages'])
 
     prompt = "Based on the current conversation, refine the tools for the agent."
 
@@ -274,9 +276,7 @@ async def refine_agent(state: AgentState):
     )
 
     # Get the message history into the format for Pydantic AI
-    message_history: list[ModelMessage] = []
-    for message_row in state['messages']:
-        message_history.extend(ModelMessagesTypeAdapter.validate_json(message_row))
+    message_history = _parse_message_history(state['messages'])
 
     prompt = "Based on the current conversation, refine the agent definition."
 
@@ -286,11 +286,9 @@ async def refine_agent(state: AgentState):
     return {"refined_agent": result.data}
 
 # End of conversation agent to give instructions for executing the agent
-async def finish_conversation(state: AgentState, writer):    
+async def finish_conversation(state: AgentState, writer):
     # Get the message history into the format for Pydantic AI
-    message_history: list[ModelMessage] = []
-    for message_row in state['messages']:
-        message_history.extend(ModelMessagesTypeAdapter.validate_json(message_row))
+    message_history = _parse_message_history(state['messages'])
 
     # Run the agent in a stream
     if not is_openai:
