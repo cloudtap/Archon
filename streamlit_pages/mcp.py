@@ -19,7 +19,17 @@ def get_paths():
 
 def generate_mcp_config(ide_type, python_path, server_script_path):
     """
-    Generate MCP configuration for the selected IDE type.
+    Generates MCP server configuration strings tailored to the specified IDE type.
+    
+    Depending on the IDE, returns either JSON-formatted configuration, plain command strings, or status messages indicating configuration requirements.
+    
+    Args:
+        ide_type: The target IDE type for which to generate the configuration.
+        python_path: Path to the Python executable.
+        server_script_path: Path to the MCP server script.
+    
+    Returns:
+        A tuple containing the Python and Docker configuration strings appropriate for the selected IDE.
     """    
     # Create the config dictionary for Python
     python_config = {

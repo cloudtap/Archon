@@ -218,6 +218,11 @@ def get_next_user_message(state: AgentState):
 
 # Determine if the user is finished creating their AI agent or not
 async def route_user_message(state: AgentState):
+    """
+    Determines the next workflow step based on the user's latest message.
+    
+    Analyzes the user's intent and returns a routing decision: "finish_conversation" to end the session, "coder_agent" to continue coding, or a list of refinement nodes if the user requests agent refinement.
+    """
     prompt = f"""
     The user has sent a message: 
     

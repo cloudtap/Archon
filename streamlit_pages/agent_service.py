@@ -10,7 +10,11 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def agent_service_tab():
-    """Display the agent service interface for managing the graph service"""
+    """
+    Displays the Streamlit interface for managing the MCP Archon agent service.
+    
+    Provides controls to start, restart, stop, and monitor the agent service process, including real-time log output and service status. Handles process management, port conflict resolution, and asynchronous log streaming. Supports auto-refreshing of logs and output clearing within the UI.
+    """
     st.header("MCP Agent Service")
     st.write("Start, restart, and monitor the Archon agent service for MCP.")
     
@@ -34,6 +38,17 @@ def agent_service_tab():
     
     # Function to kill any process using port 8100
     def kill_process_on_port(port):
+        """
+        Attempts to terminate any process currently using the specified network port.
+        
+        If a process is found occupying the given port, it is forcefully killed. Success or error messages are logged to the output queue in session state.
+        
+        Args:
+            port: The network port number to check and free.
+        
+        Returns:
+            True if a process was found and killed; False otherwise or on error.
+        """
         try:
             if platform.system() == "Windows":
                 # Windows: use netstat to find the process using the port

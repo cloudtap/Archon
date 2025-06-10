@@ -60,22 +60,17 @@ def _make_request(thread_id: str, user_input: str, config: dict) -> str:
 
 @mcp.tool()
 async def run_agent(thread_id: str, user_input: str) -> str:
-    """Run the Archon agent with user input.
-    Only use this tool after you have called create_thread in this conversation to get a unique thread ID.
-    If you already created a thread ID in this conversation, do not create another one. Reuse the same ID.
-    After you receive the code from Archon, always implement it into the codebase unless asked not to.
-
-    After using this tool and implementing the code it gave back, ask the user if they want you to refine the agent
-    autonomously (they can just say 'refine') or they can just give feedback and you'll improve the agent that way.
-
-    If they want to refine the agent, just give 'refine' for user_input.
+    """
+    Processes a user input within an existing conversation thread and returns the agent's response.
+    
+    Validates the thread ID, sends the user input to the external graph service, appends the input to the thread's history, and returns the generated response. Raises a ValueError if the thread ID does not exist.
     
     Args:
-        thread_id: The conversation thread ID
-        user_input: The user's message to process
+        thread_id: Unique identifier for the conversation thread.
+        user_input: The user's message to be processed.
     
     Returns:
-        str: The agent's response which generally includes the code for the agent
+        The agent-generated response as a string.
     """
     if thread_id not in active_threads:
         write_to_log(f"Error: Thread not found - {thread_id}")
