@@ -8,7 +8,6 @@ import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils.utils import reload_archon_graph
 
 def agent_service_tab():
     """Display the agent service interface for managing the graph service"""
@@ -39,10 +38,10 @@ def agent_service_tab():
             if platform.system() == "Windows":
                 # Windows: use netstat to find the process using the port
                 result = subprocess.run(
-                    f'netstat -ano | findstr :{port}',
-                    shell=True, 
-                    capture_output=True, 
-                    text=True
+                    ["netstat", "-ano"],
+                    capture_output=True,
+                    text=True,
+                    check=False,
                 )
                 
                 if result.stdout:
@@ -52,23 +51,28 @@ def agent_service_tab():
                             parts = line.strip().split()
                             pid = parts[-1]
                             # Kill the process
-                            subprocess.run(f'taskkill /F /PID {pid}', shell=True)
+                            subprocess.run([
+                                "taskkill",
+                                "/F",
+                                "/PID",
+                                pid,
+                            ], check=False)
                             st.session_state.output_queue.put(f"[{time.strftime('%H:%M:%S')}] Killed any existing process using port {port} (PID: {pid})\n")
                             return True
             else:
                 # Unix-like systems: use lsof to find the process using the port
                 result = subprocess.run(
-                    f'lsof -i :{port} -t',
-                    shell=True, 
-                    capture_output=True, 
-                    text=True
+                    ["lsof", "-i", f":{port}", "-t"],
+                    capture_output=True,
+                    text=True,
+                    check=False,
                 )
                 
                 if result.stdout:
                     # Extract the PID from the output
                     pid = result.stdout.strip()
                     # Kill the process
-                    subprocess.run(f'kill -9 {pid}', shell=True)
+                    subprocess.run(["kill", "-9", pid], check=False)
                     st.session_state.output_queue.put(f"[{time.strftime('%H:%M:%S')}] Killed process using port {port} (PID: {pid})\n")
                     return True
                     

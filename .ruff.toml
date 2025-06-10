@@ -1,0 +1,5 @@
+exclude = [
+    "iterations/*",
+    "agent-resources/tools/*",
+    "agent-resources/examples/*",
+]

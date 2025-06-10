@@ -1,4 +1,4 @@
-from typing import Dict, Any, List, Optional
+from typing import List
 from openai import AsyncOpenAI
 from supabase import Client
 import sys

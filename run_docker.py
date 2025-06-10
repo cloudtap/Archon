@@ -3,9 +3,7 @@
 Simple script to build and run Archon Docker containers.
 """
 
-import os
 import subprocess
-import platform
 import time
 from pathlib import Path
 

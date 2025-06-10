@@ -2,7 +2,6 @@ import os
 import sys
 import asyncio
 import threading
-import subprocess
 import requests
 import json
 import time
@@ -20,7 +19,6 @@ import html2text
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.utils import get_env_var, get_clients
 
-from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig, CacheMode
 
 load_dotenv()
 
