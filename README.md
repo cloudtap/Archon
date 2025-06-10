@@ -147,6 +147,25 @@ streamlit run streamlit_ui.py
 
 This ensures you're always running the most recent version of Archon with all the latest features and bug fixes.
 
+## Official Container Image (GHCR)
+
+Archon now provides an official container image via GitHub Container Registry (GHCR) for easy deployment:
+
+```bash
+# Pull the latest Archon image from GHCR
+# (replace <owner> with the actual GitHub owner, e.g. coleam00)
+docker pull ghcr.io/<owner>/archon:latest
+
+# Run the container (example)
+docker run -p 8501:8501 -p 8100:8100 ghcr.io/<owner>/archon:latest
+```
+
+- The image is automatically built and published on every update to the `Dockerfile` or `requirements.txt`.
+- For advanced configuration, use environment variables or mount volumes as needed.
+- See the [workflow file](.github/workflows/docker-ghcr.yml) for build details.
+
+> **Note:** The image will be available after the first successful workflow run on the main branch.
+
 ## Project Evolution
 
 ### V1: Single-Agent Foundation
@@ -159,7 +178,7 @@ This ensures you're always running the most recent version of Archon with all th
 - Multi-agent system with planning and execution separation
 - Reasoning LLM (O3-mini/R1) for architecture planning
 - LangGraph for workflow orchestration
-- Support for local LLMs via Ollama
+- Support for local LLMs via Olloma
 - [Learn more about V2](iterations/v2-agentic-workflow/README.md)
 
 ### V3: MCP Support
@@ -323,3 +342,44 @@ For version-specific details:
 - [V4 Documentation](iterations/v4-streamlit-ui-overhaul/README.md)
 - [V5 Documentation](iterations/v5-parallel-specialized-agents/README.md)
 - [V6 Documentation](iterations/v6-tool-library-integration/README.md)
+
+## Advanced Usage and Notes
+
+### Multi-Container Support (MCP)
+Archon supports running both the main app and the MCP server as separate containers. The provided `run_docker.py` script will:
+- Build the main Archon container (Streamlit UI + Graph Service)
+- Build the MCP container (Model Context Protocol server)
+- Start the main container and expose ports 8501 (UI) and 8100 (Graph Service)
+- Use your `.env` file for environment variables if present
+
+To run the MCP container manually:
+```bash
+cd mcp
+# Build the MCP container
+docker build -t archon-mcp:latest .
+# Run the MCP container
+# (adjust port mapping as needed)
+docker run -p 8100:8100 archon-mcp:latest
+```
+
+### Customizing the Build
+- You can add or override environment variables by editing the `.env` file in the project root.
+- To mount local files or directories, use the `-v` flag with `docker run`.
+- For development, you can rebuild the image after making changes:
+  ```bash
+  docker build -t archon:latest .
+  ```
+
+### Updating the GHCR Image
+- The GHCR image is rebuilt and published automatically on every push to `main` that changes the `Dockerfile` or `requirements.txt`.
+- To use the latest image:
+  ```bash
+  docker pull ghcr.io/<owner>/archon:latest
+  ```
+
+### Troubleshooting
+- If you encounter issues with the container, check logs with:
+  ```bash
+  docker logs archon-container
+  ```
+- For MCP server logs, check the container running `archon-mcp:latest`.
