@@ -4,13 +4,6 @@ import streamlit as st
 import logfire
 import asyncio
 
-# Set page config - must be the first Streamlit command
-st.set_page_config(
-    page_title="Archon - Agent Builder",
-    page_icon="🤖",
-    layout="wide",
-)
-
 # Utilities and styles
 from utils.utils import get_clients
 from streamlit_pages.styles import load_css
@@ -24,6 +17,13 @@ from streamlit_pages.documentation import documentation_tab
 from streamlit_pages.agent_service import agent_service_tab
 from streamlit_pages.mcp import mcp_tab
 from streamlit_pages.future_enhancements import future_enhancements_tab
+
+# Set page config - must be the first Streamlit command
+st.set_page_config(
+    page_title="Archon - Agent Builder",
+    page_icon="🤖",
+    layout="wide",
+)
 
 # Load environment variables from .env file
 load_dotenv()

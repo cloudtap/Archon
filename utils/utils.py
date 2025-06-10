@@ -1,4 +1,4 @@
-from supabase import Client, create_client
+from supabase import Client
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
 from datetime import datetime
@@ -7,7 +7,6 @@ from typing import Optional
 import streamlit as st
 import webbrowser
 import importlib
-import inspect
 import json
 import sys
 import os

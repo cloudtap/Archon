@@ -94,7 +94,7 @@ async def run_agent(thread_id: str, user_input: str) -> str:
         active_threads[thread_id].append(user_input)
         return result['response']
         
-    except Exception as e:
+    except Exception:
         raise
 
 

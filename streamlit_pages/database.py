@@ -97,7 +97,7 @@ def database_tab(supabase):
     
     try:
         # Try to query the table to see if it exists
-        response = supabase.table("site_pages").select("id").limit(1).execute()
+        supabase.table("site_pages").select("id").limit(1).execute()
         table_exists = True
         
         # Check if the table has data
@@ -163,7 +163,7 @@ def database_tab(supabase):
                     try:
                         with st.spinner("Clearing table data..."):
                             # Use the Supabase client to delete all rows
-                            response = supabase.table("site_pages").delete().neq("id", 0).execute()
+                            supabase.table("site_pages").delete().neq("id", 0).execute()
                             st.success("✅ Table data cleared successfully!")
                             st.rerun()
                     except Exception as e:

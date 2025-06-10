@@ -1,14 +1,12 @@
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.models.openai import OpenAIModel
-from pydantic_ai import Agent, RunContext
+from pydantic_ai import Agent
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from typing import TypedDict, Annotated, List, Any
+from typing import TypedDict, Annotated, List
 from langgraph.config import get_stream_writer
 from langgraph.types import interrupt
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
-from supabase import Client
 import logfire
 import os
 import sys
@@ -231,9 +229,11 @@ async def route_user_message(state: AgentState):
     """
 
     result = await router_agent.run(prompt)
-    
-    if result.data == "finish_conversation": return "finish_conversation"
-    if result.data == "refine": return ["refine_prompt", "refine_tools", "refine_agent"]
+
+    if result.data == "finish_conversation":
+        return "finish_conversation"
+    if result.data == "refine":
+        return ["refine_prompt", "refine_tools", "refine_agent"]
     return "coder_agent"
 
 # Refines the prompt for the AI agent

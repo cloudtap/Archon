@@ -3,18 +3,12 @@ from __future__ import annotations as _annotations
 from dataclasses import dataclass
 from dotenv import load_dotenv
 import logfire
-import asyncio
-import httpx
 import os
 import sys
-import json
 from typing import List
-from pydantic import BaseModel
-from pydantic_ai import Agent, ModelRetry, RunContext
+from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.models.openai import OpenAIModel
-from openai import AsyncOpenAI
-from supabase import Client
 
 # Add the parent directory to sys.path to allow importing from the parent directory
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
