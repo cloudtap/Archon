@@ -57,7 +57,11 @@ def show_manual_sql_instructions(sql, vector_dim, recreate=False):
     st.success("After executing the SQL, return to this page and refresh to see the updated table status.")
 
 def database_tab(supabase):
-    """Display the database configuration interface"""
+    """
+    Displays the Streamlit interface for configuring and managing the `site_pages` table in the Supabase database for Archon.
+    
+    Provides information about the table's purpose and schema, checks for table existence and data, allows selection of embedding vector dimensions, and generates SQL for table creation or recreation. Offers manual instructions for creating or recreating the table, and provides options to clear all data while retaining the table structure. Handles errors and guides users through manual steps if automated actions fail.
+    """
     st.header("Database Configuration")
     st.write("Set up and manage your Supabase database tables for Archon.")
     
