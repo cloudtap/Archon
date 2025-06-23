@@ -36,4 +36,4 @@ Add any other context about the problem here, such as:
 - Any workarounds you've discovered?
 
 ## Possible Solution
-If you have suggestions on how to fix the issue or what might be causing it.
+If you have suggestions on how to fix the issue or what might be causing it, please describe them here.
