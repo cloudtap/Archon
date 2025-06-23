@@ -326,8 +326,7 @@ CREATE TABLE site_pages (
 The Streamlit UI provides an interface to set up this database structure automatically.
 
 ## Contributing
-
-We welcome contributions! Whether you're fixing bugs, adding features, or improving documentation, please feel free to submit a Pull Request.
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on reporting issues and submitting pull requests.
 
 ## License
 
